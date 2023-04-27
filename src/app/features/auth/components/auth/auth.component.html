@@ -1,0 +1,9 @@
+<amplify-authenticator [formFields]="formFields">
+  <ng-template
+    amplifySlot="authenticated"
+    let-user="user"
+    let-signOut="signOut"
+  >
+    {{router.navigate(['/files'])}}
+  </ng-template>
+</amplify-authenticator>

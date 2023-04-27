@@ -2,11 +2,11 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
 const routes: Routes = [
-  {path: '', redirectTo: 'login', pathMatch: 'full'},
+  {path: '', redirectTo: 'auth', pathMatch: 'full'},
   {
-    path: 'login',
+    path: 'auth',
     loadChildren: () =>
-      import('./features/login/login.module').then((m) => m.LoginModule),
+      import('./features/auth/auth.module').then((m) => m.AuthModule),
   },
   {path: 'files', loadChildren: () => import('./features/files/files.module').then(m => m.FilesModule)},
 ];

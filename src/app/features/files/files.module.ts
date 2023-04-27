@@ -21,6 +21,9 @@ import {FilesComponent} from './containers/files/files.component';
     HttpClientModule
   ],
   providers: [FilesService],
+  exports: [
+    FilesComponent
+  ]
 })
 export class FilesModule {
 }

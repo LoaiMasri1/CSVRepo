@@ -1,5 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FilesService, MyFile} from "../../files.service";
+import {CognitoService} from "../../../../shared/services/cognito.service";
 
 @Component({
   selector: 'app-files-list',
@@ -10,39 +11,40 @@ export class FileListComponent implements OnInit {
   files: MyFile[] = [];
   @Output() uploadedFiles = new EventEmitter<MyFile[]>();
   displayedColumns: string[] = ['name', 'size', 'actions'];
-  isLoading:boolean = false;
+  isLoading: boolean = false;
 
-  constructor(private fileService: FilesService) {
+  constructor(private fileService: FilesService, private cognitoService: CognitoService) {
   }
 
   ngOnInit(): void {
     this.getFiles();
   }
 
+
   getFiles(): void {
     this.isLoading = true;
     this.fileService.getFiles().subscribe({
-        next: files => this.files = files,
-        error: error => console.error(error),
-        complete: () => this.isLoading = false
-      });
+      next: files => this.files = files,
+      error: error => console.error(error),
+      complete: () => this.isLoading = false
+    });
     this.uploadedFiles.emit(this.files);
   }
 
   downloadFile(file: MyFile): void {
     this.isLoading = true;
     this.fileService.downloadFile(file).subscribe({
-        next: data => {
-          const blob = new Blob([data], {type: 'text/csv'});
-          const url = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = file.name;
-          link.click();
-        },
-        error: error => console.error(error),
-        complete: () => this.isLoading = false
-      });
+      next: data => {
+        const blob = new Blob([data], {type: 'text/csv'});
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = file.name;
+        link.click();
+      },
+      error: error => console.error(error),
+      complete: () => this.isLoading = false
+    });
   }
 
   deleteFile(fileId: string): void {
