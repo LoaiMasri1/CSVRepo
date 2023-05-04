@@ -1,8 +1,8 @@
 <div class="container">
   <div>
-    <app-file-upload (fileUploaded)="uploadFile($event)"></app-file-upload>
+    <app-file-upload></app-file-upload>
   </div>
-  <app-files-list (uploadedFiles)="files=$event"></app-files-list>
+  <app-files-list></app-files-list>
   <div class="right-nav">
     <p>Welcome, <span class="message">{{authenticatedUserName}}!</span></p>
     <mat-icon matSuffix (click)="signOut()" color="primary">logout</mat-icon>

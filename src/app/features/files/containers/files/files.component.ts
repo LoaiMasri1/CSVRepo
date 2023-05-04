@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FilesService, MyFile} from "../../files.service";
+import {FilesService} from "../../files.service";
 import {Amplify} from "aws-amplify";
 import {environment} from "../../../../../environments/environment";
 import { Router} from "@angular/router";
@@ -14,7 +14,6 @@ import {AuthenticatorService} from "@aws-amplify/ui-angular";
 })
 export class FilesComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
-  files: MyFile[] = [];
   authenticatedUserName: string | null="visitor"
   subscription = new Array<Subscription>();
 
@@ -32,17 +31,6 @@ export class FilesComponent implements OnInit, OnDestroy {
     //   }
     // ));
 
-  }
-
-  uploadFile(file: File): void {
-    this.isLoading = true;
-    this._fileService.saveFile(file).subscribe(
-      {
-        next: () => this.files,
-        error: error => console.error(error),
-        complete: () => this.isLoading = false
-      }
-    );
   }
 
   signOut(): void {
