@@ -1,5 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {MaterialService} from "../../../../shared/material/material.service";
+import {FilesService} from "../../files.service";
 
 @Component({
   selector: 'app-file-upload',
@@ -8,8 +10,11 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 })
 export class FileUploadComponent implements OnInit {
   selectedFile!: File;
+  @Output() isLoading: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() fileUploaded: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private snackBar: MatSnackBar) {
+  constructor(private readonly _materialService: MaterialService,
+              private readonly _fileService: FilesService) {
   }
 
   ngOnInit() {
@@ -21,17 +26,21 @@ export class FileUploadComponent implements OnInit {
   }
 
   onSubmit() {
-    const fileReader = new FileReader();
-    fileReader.readAsText(this.selectedFile, 'UTF-8');
-    fileReader.onload = () => {
-      //this.fileUploaded.emit(this.selectedFile)
-      this.snackBar.open('File uploaded successfully', 'Close', {duration: 2000});
-    };
-    fileReader.onerror = (error) => {
-      console.log(error);
-      this.snackBar.open('Error while reading files', 'Close', {
-        duration: 2000,
-      });
-    }
+    this.isLoading.emit(true);
+    this._fileService.uploadFile(this.selectedFile).subscribe(
+      {
+        next: (response) => {
+          this._materialService.openSnackBar("File uploaded successfully", "Close");
+          this.isLoading.emit(false);
+          this.fileUploaded.emit(true);
+        },
+        error: (error) => {
+          console.error(error);
+          this._materialService.openSnackBar("Error uploading file", "Close");
+          this.isLoading.emit(false);
+        },
+        complete: () => this.isLoading.emit(false)
+      }
+    )
   }
 }

@@ -1,8 +1,8 @@
 <div class="container">
   <div>
-    <app-file-upload></app-file-upload>
+    <app-file-upload (isLoading)="onIsLoadingChange($event)" (fileUploaded)="onFileUploaded($event)"></app-file-upload>
   </div>
-  <app-files-list></app-files-list>
+  <app-files-list [isLoading]="isLoading" [isFileUploaded]="isFileUploaded"></app-files-list>
   <div class="right-nav">
     <p>Welcome, <span class="message">{{authenticatedUserName}}!</span></p>
     <mat-icon matSuffix (click)="signOut()" color="primary">logout</mat-icon>

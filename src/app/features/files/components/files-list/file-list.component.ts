@@ -1,22 +1,19 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {FilesService} from "../../files.service";
 import {MyFile} from "../../models/MyFile";
-import {Observable, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {MaterialService} from "../../../../shared/material/material.service";
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {DialogComponent} from "../../../../shared/material/components/dialog/dialog.component";
-import {DialogOptions} from "../../../../shared/material/models/dialog";
 
 @Component({
   selector: 'app-files-list',
   templateUrl: './file-list.component.html',
   styleUrls: ['./file-list.component.scss']
 })
-export class FileListComponent implements OnInit, OnDestroy {
+export class FileListComponent implements OnInit, OnDestroy, OnChanges {
   displayedColumns: string[] = ['name', "size", 'actions'];
-  isLoading: boolean = false;
+  @Input() isLoading: boolean = false;
+  @Input() isFileUploaded: boolean = false;
   files: MyFile[] = [];
-  public dialogRef!: MatDialogRef<DialogComponent>;
   subscription: Array<Subscription> = [];
 
   constructor(private readonly _fileService: FilesService,
@@ -27,7 +24,15 @@ export class FileListComponent implements OnInit, OnDestroy {
     this.getFiles();
   }
 
+  ngOnChanges() {
+    console.log(this.isFileUploaded)
+    if (!this.isFileUploaded) return;
+    this.getFiles();
+    this.isFileUploaded = false;
+  }
+
   private getFiles() {
+    console.log("get files")
     this.isLoading = true;
     this.subscription.push(this._fileService.getFiles().subscribe({
         next: (files) => {
@@ -57,25 +62,27 @@ export class FileListComponent implements OnInit, OnDestroy {
       title: "Delete File",
       message: "Are you sure you want to delete this file?"
     }).subscribe(
-      {
-        next: (result: boolean) => {
-          if (!result) return;
-          this.isLoading = true;
-          this.subscription.push(this._fileService.deleteFile(fileName).subscribe({
-            next: () => {
-              this._materialService.openSnackBar("File deleted successfully");
-              this.getFiles();
-            },
-            error: (error) => {
-              console.error(error);
-              this._materialService.openSnackBar("Error deleting file");
-              this.isLoading = false;
-            },
-            complete: () => this.isLoading = false
-          }))
-        }
+      (result: boolean) => {
+        if (!result) return;
+        this.deleteFileConfirm(fileName);
       }
     ))
+  }
+
+  deleteFileConfirm(fileName: string) {
+    this.isLoading = true;
+    this.subscription.push(this._fileService.deleteFile(fileName).subscribe({
+      next: () => {
+        this._materialService.openSnackBar("File deleted successfully");
+        this.getFiles();
+      },
+      error: (error) => {
+        console.error(error);
+        this._materialService.openSnackBar("Error deleting file");
+        this.isLoading = false;
+      },
+      complete: () => this.isLoading = false
+    }))
   }
 
   ngOnDestroy() {
