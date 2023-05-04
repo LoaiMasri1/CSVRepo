@@ -1,5 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {MaterialService} from "../../../../shared/material/material.service";
 import {FilesService} from "../../files.service";
 
@@ -8,7 +7,7 @@ import {FilesService} from "../../files.service";
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.scss']
 })
-export class FileUploadComponent implements OnInit {
+export class FileUploadComponent {
   selectedFile!: File;
   @Output() isLoading: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() fileUploaded: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -16,10 +15,6 @@ export class FileUploadComponent implements OnInit {
   constructor(private readonly _materialService: MaterialService,
               private readonly _fileService: FilesService) {
   }
-
-  ngOnInit() {
-  }
-
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
@@ -29,7 +24,7 @@ export class FileUploadComponent implements OnInit {
     this.isLoading.emit(true);
     this._fileService.uploadFile(this.selectedFile).subscribe(
       {
-        next: (response) => {
+        next: () => {
           this._materialService.openSnackBar("File uploaded successfully", "Close");
           this.isLoading.emit(false);
           this.fileUploaded.emit(true);

@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {FilesService} from "../../files.service";
 import {MyFile} from "../../models/MyFile";
 import {Subscription} from "rxjs";
@@ -83,6 +83,24 @@ export class FileListComponent implements OnInit, OnDestroy, OnChanges {
       },
       complete: () => this.isLoading = false
     }))
+  }
+
+  exportFile(fileName: string) {
+    this.isLoading = true;
+    this.subscription.push(this._fileService.exportFile(fileName).subscribe({
+      next: (response) => {
+        const json = JSON.stringify(response,null,2);
+        const blob = new Blob([json], {type: 'application/json'});
+        const url = window.URL.createObjectURL(blob);
+        const anchor = document.createElement("a");
+        anchor.download = `${fileName.split('.')[0]}.json`;
+        anchor.href = url;
+        anchor.click();
+      },
+      error: (error) => console.error(error),
+      complete: () => this.isLoading = false
+    }))
+
   }
 
   ngOnDestroy() {

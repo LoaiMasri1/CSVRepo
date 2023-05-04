@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-auth',
@@ -9,7 +8,6 @@ import {Router} from "@angular/router";
 })
 
 export class AuthComponent implements OnInit {
-  public router: Router;
   public formFields = {
     signUp: {
       email: {
@@ -27,8 +25,7 @@ export class AuthComponent implements OnInit {
     },
   }
 
-  constructor(_router: Router) {
-    this.router = _router;
+  constructor() {
   }
 
   async ngOnInit() {

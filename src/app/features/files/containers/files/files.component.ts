@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {FilesService} from "../../files.service";
 import {Amplify} from "aws-amplify";
 import {environment} from "../../../../../environments/environment";
@@ -13,8 +13,10 @@ import {AuthenticatorService} from "@aws-amplify/ui-angular";
   styleUrls: ['./files.component.scss']
 })
 export class FilesComponent implements OnInit, OnDestroy {
+  @Input() user: any;
+  @Input() signOut: any;
   isLoading: boolean = false;
-  authenticatedUserName: string | null = "visitor"
+  authenticatedUserName!: string;
   subscription = new Array<Subscription>();
   isFileUploaded: boolean = false;
 
@@ -25,12 +27,10 @@ export class FilesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Amplify.configure(environment.congito);
+    this.authenticatedUserName = this.user.username || "Guest";
+    console.log(this.user);
   }
 
-  signOut(): void {
-    this.authenticator.signOut();
-    this._router.navigate(['/']);
-  }
 
   ngOnDestroy() {
     this.subscription.forEach(subscription => subscription.unsubscribe());

@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   apiBaseUrl: 'https://btvo5sldya.execute-api.eu-south-1.amazonaws.com/api/v1/',
   congito: {
-    userPoolId: 'eu-south-1_rjg7HXKGY',
-    userPoolWebClientId:"3te3t1ql11e2bqp7lfiemat22r"
+    userPoolId: 'eu-south-1_TIeDxhafk',
+    userPoolWebClientId:"6av12o0ggcq3ll1s2904bm7901",
   }
 };

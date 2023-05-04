@@ -4,6 +4,6 @@
     let-user="user"
     let-signOut="signOut"
   >
-    {{router.navigate(['/files'])}}
+    <app-files [user]="user" [signOut]="signOut"/>
   </ng-template>
 </amplify-authenticator>

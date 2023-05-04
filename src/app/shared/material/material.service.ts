@@ -21,7 +21,7 @@ export class MaterialService {
   openDialog(options: DialogOptions): Observable<boolean> {
 
     this.dialogRef = this._dialog.open(DialogComponent, {
-        width: '250px',
+        width: options.width || "250px",
         data: {
           title: options.title,
           message: options.message,

@@ -3,4 +3,5 @@ export interface DialogOptions {
   message: string;
   confirmText?: string;
   cancelText?: string;
+  width?: string;
 }

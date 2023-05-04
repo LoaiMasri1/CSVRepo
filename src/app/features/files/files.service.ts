@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {map, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {MyFile} from "./models/MyFile";
@@ -40,7 +40,9 @@ export class FilesService {
     })
   }
 
-
+  exportFile(fileName: string): Observable<Array<object>> {
+    return this.http.get<Array<object>>(`${this.baseUrl}/export?fileName=${fileName}`);
+  }
 }
 
 
