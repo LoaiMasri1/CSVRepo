@@ -12,10 +12,10 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let file">
-        <button mat-icon-button color="primary" (click)="downloadFile(file.fileName)">
+        <button mat-icon-button color="primary" (click)="downloadFile(file.fileName)" *ngIf="userRole">
           <mat-icon>cloud_download</mat-icon>
         </button>
-        <button mat-icon-button color="warn" (click)="deleteFile(file.fileName)">
+        <button mat-icon-button color="warn" (click)="deleteFile(file.fileName)" *ngIf="userRole == 0">
           <mat-icon>delete</mat-icon>
         </button>
         <!-- Convert To Json Button -->
@@ -30,4 +30,3 @@
   </table>
   <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
 </div>
-
