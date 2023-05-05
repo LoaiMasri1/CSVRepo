@@ -27,6 +27,7 @@ export class FilesService {
   }
 
   uploadFile(file: File): Observable<string> {
+
     const fileReader = new FileReader();
     fileReader.readAsBinaryString(file);
     return new Observable<string>(observer => {

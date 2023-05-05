@@ -1,4 +1,4 @@
-import { UserRole } from './../../../auth/models/enum/role.enum';
+import { UserRole } from '../../../auth/models/enum/role.enum';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Amplify } from 'aws-amplify';
 import { environment } from '../../../../../environments/environment';
@@ -22,7 +22,7 @@ export class FilesComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     Amplify.configure(environment.congito);
-    
+
     this.authenticatedUserName = this.user.username || 'Guest';
     this.saveToken();
     this.userRole = JSON.parse(localStorage.getItem('payload') || '{}')[

@@ -1,19 +1,18 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
-import { FilesService } from '../../files.service';
-import { MyFile } from '../../models/MyFile';
-import { Subscription } from 'rxjs';
-import { MaterialService } from '../../../../shared/material/material.service';
-import { UserRole } from 'src/app/features/auth/models/enum/role.enum';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {FilesService} from '../../files.service';
+import {MyFile} from '../../models/MyFile';
+import {Subscription} from 'rxjs';
+import {MaterialService} from '../../../../shared/material/material.service';
+import {UserRole} from 'src/app/features/auth/models/enum/role.enum';
 
 @Component({
   selector: 'app-files-list',
   templateUrl: './file-list.component.html',
   styleUrls: ['./file-list.component.scss'],
 })
-export class FileListComponent implements OnInit, OnDestroy, OnChanges {
+export class FileListComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['name', 'size', 'actions'];
   @Input() isLoading: boolean = false;
-  @Input() isFileUploaded: boolean = false;
   files: MyFile[] = [];
   subscription: Array<Subscription> = [];
   userRole: UserRole = UserRole.READ;
@@ -21,19 +20,14 @@ export class FileListComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     private readonly _fileService: FilesService,
     private readonly _materialService: MaterialService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.getFiles();
     this.userRole = JSON.parse(localStorage.getItem('payload') || '{}')[
       'custom:role'
-    ] as UserRole;
-  }
-
-  ngOnChanges() {
-    if (!this.isFileUploaded) return;
-    this.getFiles();
-    this.isFileUploaded = false;
+      ] as UserRole;
   }
 
   private getFiles() {
@@ -84,7 +78,7 @@ export class FileListComponent implements OnInit, OnDestroy, OnChanges {
       this._fileService.deleteFile(fileName).subscribe({
         next: () => {
           this._materialService.openSnackBar('File deleted successfully');
-          this.getFiles();
+          this.files = this.files.filter((file) => file.fileName !== fileName);
         },
         error: (error) => {
           console.error(error);
@@ -102,7 +96,7 @@ export class FileListComponent implements OnInit, OnDestroy, OnChanges {
       this._fileService.exportFile(fileName).subscribe({
         next: (response) => {
           const json = JSON.stringify(response, null, 2);
-          const blob = new Blob([json], { type: 'application/json' });
+          const blob = new Blob([json], {type: 'application/json'});
           const url = window.URL.createObjectURL(blob);
           const anchor = document.createElement('a');
           anchor.download = `${fileName.split('.')[0]}.json`;

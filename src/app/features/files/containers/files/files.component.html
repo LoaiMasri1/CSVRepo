@@ -1,8 +1,8 @@
 <div class="container">
   <div *ngIf="userRole == 0 || userRole== 1">
-    <app-file-upload (isLoading)="onIsLoadingChange($event)" (fileUploaded)="onFileUploaded($event)"></app-file-upload>
+    <app-file-upload (isLoading)="onIsLoadingChange($event)"/>
   </div>
-  <app-files-list [isLoading]="isLoading" [isFileUploaded]="isFileUploaded"></app-files-list>
+  <app-files-list [isLoading]="isLoading"/>
   <div class="right-nav">
     <p>Welcome, <span class="message">{{authenticatedUserName}}!</span></p>
     <mat-icon matSuffix (click)="onSignOut()" color="primary">logout</mat-icon>

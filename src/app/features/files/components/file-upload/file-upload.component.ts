@@ -10,7 +10,6 @@ import {FilesService} from "../../files.service";
 export class FileUploadComponent {
   selectedFile!: File;
   @Output() isLoading: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() fileUploaded: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private readonly _materialService: MaterialService,
               private readonly _fileService: FilesService) {
@@ -25,9 +24,8 @@ export class FileUploadComponent {
     this._fileService.uploadFile(this.selectedFile).subscribe(
       {
         next: () => {
-          this._materialService.openSnackBar("File uploaded successfully", "Close");
+          this._materialService.openSnackBar("File uploaded successfully please refresh the page to see the changes", "Close");
           this.isLoading.emit(false);
-          this.fileUploaded.emit(true);
         },
         error: (error) => {
           console.error(error);
