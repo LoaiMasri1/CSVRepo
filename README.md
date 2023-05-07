@@ -33,7 +33,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 This project was developed using Angular and various AWS services such as AWS Lambda functions, DynamoDB, Cognito, and API Gateway. The purpose of the application is to provide a simple and efficient way for users to upload CSV files and view the uploaded files, and export them to JSON format.
 
 The application is designed to be user-friendly and secure, with authentication provided by Cognito and access control enforced by API Gateway. DynamoDB is used to store file contents , while Lambda functions are used to handle file uploads and exports.
-Amplify Url ![here...](https://master.dgx4c2xfofd1p.amplifyapp.com/)
+### Amplify Url [here...](https://master.dgx4c2xfofd1p.amplifyapp.com/)
 
 ## Component and AWS Services Diagram
 
